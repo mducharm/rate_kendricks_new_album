@@ -21,3 +21,12 @@ CREATE TABLE "songs" (
 	FOREIGN KEY("album_id") REFERENCES "albums"("id"),
 	FOREIGN KEY("artist_id") REFERENCES "artists"("id")
 );
+
+CREATE TABLE "reactions" (
+	"id"	INTEGER,
+	"content"	TEXT,
+	"rating"	INTEGER NOT NULL,
+	"song_id"	INTEGER NOT NULL,
+	PRIMARY KEY("id"),
+	FOREIGN KEY("song_id") REFERENCES "songs"("id")
+);

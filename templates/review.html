@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+
+
+    <h1>{% block title %} Reviewing {{ song["name"] }} by {{song["artist_name"]}} {% endblock %}</h1>
+
+    <form action="/review/{{ song['id'] }}" method="post">
+
+        <div class="field">
+            <label class="label">Username</label>
+            <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+            </span>
+            <div class="control">
+                <input name="user" class="input" type="text" placeholder="Username" required>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Score</label>
+            <div class="control">
+                <input name="score" class="input" type="number" min="1" max="10" required>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Review</label>
+            <div class="control">
+                <textarea name="review" class="textarea" placeholder="Write your review here"></textarea>
+            </div>
+        </div>
+
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-link">Submit</button>
+            </div>
+            <div class="control">
+                <button class="button is-link is-light">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

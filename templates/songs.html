@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% set first_song = songs[0] %}
+<div class="container">
+    <h1>{% block title %} so uh what do you think of Kendrick's new album? {% endblock %}</h1>
+    <div class="columns is-mobile">
+        <div class="column is-half">
+
+
+            <!-- <div class="songs-container"> -->
+            <table class="table is-hoverable is-narrow">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="is-selected">
+                        <td class="song" id="{{first_song['id']}}">
+                            <p>
+                                {{ first_song['name'] }}
+                            </p>
+                            <p style="font-size: 10px;">
+                                {{ first_song['album_name'] }} - {{ first_song['artist_name'] }}
+                            </p>
+                        </td>
+                        <td><a href="/review/{{first_song['id']}}">Review</a></td>
+                    </tr>
+                    {% for song in songs[1:] %}
+                    <tr>
+                        <td class="song" id="{{song['id']}}">
+                            <p>
+                                {{ song['name'] }}
+                            </p>
+                            <p style="font-size: 10px;">
+                                {{ song['album_name'] }} - {{ song['artist_name'] }}
+                            </p>
+                        </td>
+                        <td><a href="/review/{{song['id']}}">Review</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="column">
+
+
+            <div class="reactions-container">
+                <h2>Reactions</h2>
+                <div id="reactions">
+                    {% for reaction in first_song["reactions"] %}
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="content">
+                                <span class="tag is-medium">{{ reaction['rating']}}</span> - {{ reaction['username']}}
+                                <br>
+                                <br>
+                                <p>
+                                    {{ reaction['content']}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- </div> -->
+</div>
+
+
+<script>
+    const songs = {{ songs| tojson }};
+    let selectedSong = songs[0];
+
+    document
+        .querySelectorAll(".song")
+        .forEach(node => {
+            node.addEventListener("click", (e) => {
+
+                document
+                    .querySelectorAll(".is-selected")
+                    .forEach(el => el.classList.remove("is-selected"));
+
+                e.target.classList.add("is-selected");
+
+                selectSong(e.target.id);
+                updateReactions();
+            });
+        })
+
+    function selectSong(id) {
+        selectedSong = songs.filter(s => s.id == id)[0];
+    }
+
+    function updateReactions() {
+        const reactionsList = document.getElementById("reactions");
+
+        reactionsList.innerHTML = "";
+
+        if (selectedSong.reactions.length === 0) {
+            reactionsList.innerHTML = "<p>Be the first to review this track</p>";
+        }
+
+        for (const reaction of selectedSong.reactions) {
+            reactionsList.innerHTML += `
+            
+            <div class="card">
+                        <div class="card-content">
+                            <div class="content">
+                                <span class="tag is-medium">${reaction.rating}</span> - ${reaction.username} 
+                                <br>
+                                <br>
+                                <p>
+                                    ${reaction.content}
+                                </p>
+                            </div>
+                        </div>
+                    </div>`;
+            // const text = `${reaction.username} - ${reaction.rating}\n\r${reaction.content}`
+            // var li = document.createElement("li");
+            // li.appendChild(document.createTextNode(text));
+            // reactionsList.appendChild(li);
+        }
+    }
+
+</script>
+
+{% endblock %}

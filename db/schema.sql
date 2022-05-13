@@ -24,6 +24,7 @@ CREATE TABLE "songs" (
 
 CREATE TABLE "reactions" (
 	"id"	INTEGER,
+	"username"	TEXT NOT NULL,
 	"content"	TEXT,
 	"rating"	INTEGER NOT NULL,
 	"song_id"	INTEGER NOT NULL,

@@ -23,6 +23,14 @@
                         <td class="song" id="{{song['id']}}">
                             <p>
                                 {{ song['name'] }}
+                                {% if song['average_rating'] == None %}
+                                {% elif song['average_rating'] > 7 %}
+                                <span class="tag is-success is-normal">{{ song['average_rating'] }}</span>
+                                {% elif song['average_rating'] > 3 %}
+                                <span class="tag is-warning is-normal">{{ song['average_rating'] }}</span>
+                                {% elif song['average_rating'] > 0 %}
+                                <span class="tag is-danger">{{ song['average_rating'] }}</span>
+                                {% endif %}
                             </p>
                             <p style="font-size: 10px;">
                                 {{ song['album_name'] }} - {{ song['artist_name'] }}
@@ -73,6 +81,9 @@
 <script>
     const songs = {{ songs| tojson }};
     let selectedSong = songs[0];
+
+    // for initial page load
+    document.querySelector(".song").classList.add("is-selected");
 
     document
         .querySelectorAll(".song")

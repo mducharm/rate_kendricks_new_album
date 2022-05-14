@@ -50,6 +50,11 @@ def get_songs_with_reactions():
                     "content": reaction["content"],
                 })
 
+        if len(current_song_reactions) > 0:
+            average_rating = sum(s["rating"] for s in current_song_reactions) / len(current_song_reactions)
+        else:
+            average_rating = None
+
         current_artist = next(artist 
                                 for artist in all_artists 
                                 if artist['id'] == song['artist_id'])
@@ -64,7 +69,8 @@ def get_songs_with_reactions():
             'artist_id': song['artist_id'],
             'artist_name': current_artist['name'],
             'album_name': current_album['name'],
-            'reactions': current_song_reactions
+            'reactions': current_song_reactions,
+            'average_rating': average_rating
         }
 
         songs_with_reactions.append(current_song_with_reactions)

@@ -24,7 +24,7 @@
                             <p>
                                 {{ song['name'] }}
                                 {% if song['average_rating'] == None %}
-                                {% elif song['average_rating'] > 7 %}
+                                {% elif song['average_rating'] >= 7 %}
                                 <span class="tag is-success is-normal">{{ song['average_rating'] }}</span>
                                 {% elif song['average_rating'] > 3 %}
                                 <span class="tag is-warning is-normal">{{ song['average_rating'] }}</span>
@@ -51,7 +51,7 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="content">
-                                {% if reaction['rating'] > 7 %}
+                                {% if reaction['rating'] >= 7 %}
                                 <span class="tag is-medium is-success">{{ reaction['rating']}}</span>
                                 {% elif reaction['rating'] > 3 %}
                                 <span class="tag is-medium is-warning">{{ reaction['rating']}}</span>

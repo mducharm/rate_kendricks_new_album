@@ -10,13 +10,9 @@ app = Flask(__name__)
 @app.route('/', methods = ['GET'])
 @app.route('/songs', methods = ['GET'])
 def reactions():
-
     if request.method == "GET":
         songs = get_songs_with_reactions()
         return render_template("songs.html", songs=songs)
-
-    if request.method == "POST":
-        return "POST"
 
     return abort(404)
 

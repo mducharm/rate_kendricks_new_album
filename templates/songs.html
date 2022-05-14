@@ -18,18 +18,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="is-selected">
-                        <td class="song" id="{{first_song['id']}}">
-                            <p>
-                                {{ first_song['name'] }}
-                            </p>
-                            <p style="font-size: 10px;">
-                                {{ first_song['album_name'] }} - {{ first_song['artist_name'] }}
-                            </p>
-                        </td>
-                        <td><a href="/review/{{first_song['id']}}">Review</a></td>
-                    </tr>
-                    {% for song in songs[1:] %}
+                    {% for song in songs %}
                     <tr>
                         <td class="song" id="{{song['id']}}">
                             <p>
@@ -49,13 +38,21 @@
 
 
             <div class="reactions-container">
-                <h2>Reactions</h2>
                 <div id="reactions">
                     {% for reaction in first_song["reactions"] %}
                     <div class="card">
                         <div class="card-content">
                             <div class="content">
-                                <span class="tag is-medium">{{ reaction['rating']}}</span> - {{ reaction['username']}}
+                                {% if reaction['rating'] > 7 %}
+                                <span class="tag is-medium is-success">{{ reaction['rating']}}</span>
+                                {% elif reaction['rating'] > 3 %}
+                                <span class="tag is-medium is-warning">{{ reaction['rating']}}</span>
+                                {% elif reaction['rating'] > 0 %}
+                                <span class="tag is-medium is-danger">{{ reaction['rating']}}</span>
+                                {% else %}
+                                <span class="tag is-medium">{{ reaction['rating']}}</span>
+                                {% endif %}
+                                 by {{ reaction['username']}}
                                 <br>
                                 <br>
                                 <p>
@@ -103,16 +100,25 @@
         reactionsList.innerHTML = "";
 
         if (selectedSong.reactions.length === 0) {
-            reactionsList.innerHTML = "<p>Be the first to review this track</p>";
+            reactionsList.innerHTML = "<br><br><p>Be the first to review this track</p>";
         }
 
         for (const reaction of selectedSong.reactions) {
+            let color = ""
+
+            if(reaction.rating > 7) {
+                color = "is-success";
+            } else if (reaction.rating > 3) {
+                color = "is-warning";
+            } else if (reaction.rating > 0) {
+                color = "is-danger";
+            }
+
             reactionsList.innerHTML += `
-            
             <div class="card">
                         <div class="card-content">
                             <div class="content">
-                                <span class="tag is-medium">${reaction.rating}</span> - ${reaction.username} 
+                                <span class="tag is-medium ${color}">${reaction.rating}</span> by ${reaction.username} 
                                 <br>
                                 <br>
                                 <p>

@@ -5,7 +5,7 @@ from db.accessor import create_review, get_song_by_id, get_songs_with_reactions
 
 app = Flask(__name__)
 
-# initialize_database()
+initialize_database()
 
 @app.route('/', methods = ['GET'])
 @app.route('/songs', methods = ['GET'])
